@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Aquisição de Drone — Segurança Empresarial</title>
+<meta name="description" content="Formulário de cadastro e controle de drones - Segurança Empresarial">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<!-- ================= PUBLIC FORM VIEW ================= -->
+<div id="public-view">
+  <!-- Nav Bar Public -->
+  <div class="wrap wrap-wide">
+    <nav class="nav-bar">
+      <div class="nav-center">
+        <div class="nav-icon"><i class="ti ti-drone"></i></div>
+        <div>
+          <div class="nav-title">Controle de Aquisição de Drone</div>
+          <div class="nav-sub">Segurança Empresarial</div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button class="btn-sm" onclick="openLogin()">
+          <i class="ti ti-lock" style="font-size:14px;"></i> Admin
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Split Layout -->
+    <div class="split-layout">
+      
+      <!-- Text Area -->
+      <div class="info-text">
+        <h2>CONTROLE DE AQUISIÇÃO DE DRONE</h2>
+        <p>Com o objetivo de fortalecer a governança e o controle sobre a aquisição de novos drones. foi instituído o uso do formulário (Forms) para registro de novas demandas da Regional Sul .</p>
+        <p>A ferramenta centraliza as solicitações, assegura padronização das informações e viabiliza maior rastreabilidade dos equipamentos.</p>
+        <p>O correto preenchimento é essencial para garantir assertividade nas decisões, otimização de recursos e aderência às diretrizes corporativas.</p>
+        <p>Dessa forma, o Forms se consolida como instrumento oficial de controle e gestão das novas aquisições de drones.</p>
+      </div>
+
+      <!-- Form Area -->
+      <div>
+        <div id="form-area">
+          <div class="card" style="margin: 0;">
+            <div class="card-title">
+              <i class="ti ti-file-plus" style="color:var(--accent2);"></i>
+              Preencha os dados abaixo
+            </div>
+
+            <div class="grid2">
+              <div class="fg">
+                <label>Nome completo *</label>
+                <input type="text" id="f-nome" placeholder="Seu nome completo" required />
+              </div>
+              <div class="fg">
+                <label>Área *</label>
+                <input type="text" id="f-area" placeholder="Ex: Segurança, Mineração..." />
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="fg">
+                <label>Gerência *</label>
+                <input type="text" id="f-gerencia" placeholder="Ex: Gerência de Operações" />
+              </div>
+              <div class="fg">
+                <label>Modelo do drone *</label>
+                <input type="text" id="f-modelo" placeholder="Ex: DJI Mavic 3 Enterprise" />
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="fg">
+                <label>Local de atuação *</label>
+                <input type="text" id="f-local" placeholder="Ex: Mina Cauê" />
+              </div>
+              <div class="fg">
+                <label>E-mail</label>
+                <input type="email" id="f-email" placeholder="seu@email.com" />
+              </div>
+            </div>
+
+            <div class="fg">
+              <label>Telefone</label>
+              <input type="tel" id="f-telefone" placeholder="(00) 00000-0000" />
+            </div>
+
+            <div class="fg">
+              <label>Observações</label>
+              <textarea id="f-obs" placeholder="Informações adicionais..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="enviar()" id="btn-enviar">
+              <i class="ti ti-send" style="font-size:16px;"></i> Enviar solicitação
+            </button>
+          </div>
+        </div>
+
+        <!-- Success Area -->
+        <div id="success-area" style="display:none;">
+          <div class="card" style="margin: 0;">
+            <div class="success-box">
+              <div class="icon-circle"><i class="ti ti-check"></i></div>
+              <h3>Cadastro enviado!</h3>
+              <p id="success-msg">Seus dados foram registrados com sucesso.</p>
+              <button class="btn btn-primary" onclick="novoCadastro()" style="max-width:260px;margin:0 auto;">
+                <i class="ti ti-plus" style="font-size:16px;"></i> Nova solicitação
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Right Area -->
+    </div>
+  </div>
+</div>
+
+<!-- ================= ADMIN LOGIN MODAL ================= -->
+<div id="login-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(12,12,15,0.9);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:1.5rem;">
+  <style>
+    .login-card {
+      width:100%;max-width:380px;position:relative;
+      background:var(--surface);border:1px solid var(--border2);
+      border-radius:20px;padding:2.5rem 2rem;text-align:center;
+      animation:fadeUp .4s ease;
+      box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    }
+    .login-close {
+      position:absolute;top:16px;right:16px;
+      background:transparent;border:none;color:var(--text3);
+      font-size:20px;cursor:pointer;transition:color .2s;
+    }
+    .login-close:hover { color:var(--text); }
+    .login-logo {
+      width:64px;height:64px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),#4f46e5);
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 1.5rem;
+      box-shadow:0 0 40px rgba(108,99,255,.3);
+    }
+    .login-logo i { font-size:28px;color:#fff; }
+    .login-card h2 { font-size:18px;font-weight:600;margin-bottom:6px; }
+    .login-card .login-sub { font-size:13px;color:var(--text2);margin-bottom:1.75rem; }
+    .login-card .fg { text-align:left;margin-bottom:14px; }
+    .login-error {
+      background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);
+      border-radius:8px;padding:10px 14px;margin-bottom:14px;
+      font-size:12px;color:#ef4444;display:none;align-items:center;gap:8px;
+    }
+    .login-error.show { display:flex; }
+    .login-btn {
+      width:100%;padding:12px;border:none;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#4f46e5);
+      color:#fff;font-size:14px;font-weight:500;cursor:pointer;
+      font-family:inherit;display:flex;align-items:center;
+      justify-content:center;gap:8px;transition:all .2s;margin-top:6px;
+    }
+    .login-btn:hover { box-shadow:0 4px 24px rgba(108,99,255,.35);transform:translateY(-1px); }
+  </style>
+  <div class="login-card">
+    <button class="login-close" onclick="closeLogin()"><i class="ti ti-x"></i></button>
+    <div class="login-logo"><i class="ti ti-drone"></i></div>
+    <h2>Acesso Administrativo</h2>
+    <p class="login-sub">Acesso restrito</p>
+    <div class="login-error" id="login-error">
+      <i class="ti ti-alert-circle"></i>
+      <span id="login-error-msg">Usuário ou senha incorretos.</span>
+    </div>
+    <div class="fg">
+      <label>Usuário</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username" />
+    </div>
+    <div class="fg">
+      <label>Senha</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">
+      <i class="ti ti-login" style="font-size:16px;"></i> Entrar
+    </button>
+  </div>
+</div>
+
+<!-- ================= ADMIN DASHBOARD VIEW ================= -->
+<div id="admin-view" style="display:none;">
+  <div class="wrap wrap-wide">
+    <nav class="nav-bar">
+      <div class="nav-center">
+        <button class="nav-back" onclick="doLogout()"><i class="ti ti-arrow-left"></i></button>
+        <div class="nav-icon" style="background:rgba(16,185,129,0.15);color:var(--ok);box-shadow:none;"><i class="ti ti-chart-bar"></i></div>
+        <div>
+          <div class="nav-title">Dashboard Admin</div>
+          <div class="nav-sub">Visualização de cadastros</div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button class="btn-sm" onclick="renderAdmin()">
+          <i class="ti ti-refresh" style="font-size:14px;"></i> Atualizar
+        </button>
+        <button class="btn-sm" onclick="exportCSV()">
+          <i class="ti ti-download" style="font-size:14px;"></i> Exportar CSV
+        </button>
+        <button class="btn-sm" onclick="doLogout()" style="color:var(--danger);border-color:rgba(239,68,68,.25);">
+          <i class="ti ti-logout" style="font-size:14px;"></i> Sair
+        </button>
+      </div>
+    </nav>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-val" id="kpi-total">0</div>
+        <div class="kpi-lbl">Total de cadastros</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpi-hoje">0</div>
+        <div class="kpi-lbl">Cadastrados Hoje</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpi-areas">0</div>
+        <div class="kpi-lbl">Áreas diferentes</div>
+      </div>
+    </div>
+
+    <!-- Busca -->
+    <div class="search-bar">
+      <i class="ti ti-search search-icon"></i>
+      <input type="text" id="busca" placeholder="Buscar por nome, área, modelo, local..." oninput="renderAdmin()" />
+    </div>
+
+    <!-- Tabela -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div id="table-area">
+        <div class="empty-state">
+          <i class="ti ti-inbox"></i>
+          <h4>Nenhum cadastro ainda</h4>
+          <p>Os cadastros aparecerão aqui quando preencherem o formulário.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= COMMON TOAST ================= -->
+<div class="toast" id="toast">
+  <i class="ti ti-check toast-icon"></i>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- ================= SCRIPT LOGIC ================= -->
+<script>
+const STORAGE_KEY = 'drone_cadastros';
+// === COLE A URL DO GOOGLE APPS SCRIPT AQUI DENTRO DAS ASPAS ===
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwsYZnKfSdqE36yrVLg4bcpTilTsXdxcTQeqat09AQYU6z5T1eoFNGtI_3qiT-2hPuRAQ/exec';
+
+// --- Utils ---
+function getCadastros() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+}
+
+function toast(msg, icon='check') {
+  document.getElementById('toast-msg').textContent = msg;
+  document.querySelector('.toast-icon').className = `ti ti-${icon} toast-icon`;
+  const el = document.getElementById('toast');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// --- Form Logic ---
+function enviar() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const area = document.getElementById('f-area').value.trim();
+  const gerencia = document.getElementById('f-gerencia').value.trim();
+  const modelo = document.getElementById('f-modelo').value.trim();
+  const local = document.getElementById('f-local').value.trim();
+
+  if (!nome || !area || !gerencia || !modelo || !local) {
+    toast('Preencha todos os campos obrigatórios (*)', 'alert-circle');
+    return;
+  }
+
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader" style="font-size:16px;"></i> Enviando...';
+
+  const cadastro = {
+    id: 'D' + Date.now().toString().slice(-6),
+    nome, area, gerencia, modelo, local,
+    email: document.getElementById('f-email').value.trim(),
+    telefone: document.getElementById('f-telefone').value.trim(),
+    obs: document.getElementById('f-obs').value.trim(),
+    data: new Date().toLocaleString('pt-BR')
+  };
+
+  // Salvar no servidor (Google Sheets) se configurado
+  if (SHEETS_URL) {
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cadastro)
+    }).then(() => finishEnviar(cadastro)).catch(e => {
+      console.error(e);
+      finishEnviar(cadastro);
+    });
+  } else {
+    finishEnviar(cadastro);
+  }
+}
+
+function finishEnviar(cadastro) {
+  // Salva backup local
+  const lista = getCadastros();
+  lista.push(cadastro);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-send" style="font-size:16px;"></i> Enviar solicitação';
+
+  document.getElementById('form-area').style.display = 'none';
+  document.getElementById('success-area').style.display = '';
+  document.getElementById('success-msg').textContent = `Cadastro #${cadastro.id} registrado em ${cadastro.data}.`;
+}
+
+function novoCadastro() {
+  ['f-nome','f-area','f-gerencia','f-modelo','f-local','f-email','f-telefone','f-obs']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('success-area').style.display = 'none';
+  document.getElementById('form-area').style.display = '';
+}
+
+// --- Admin Login Logic ---
+const DEFAULT_USER = 'admin';
+const DEFAULT_PASS = 'admin123';
+function getUser() { return localStorage.getItem('drone_admin_user') || DEFAULT_USER; }
+function getPass() { return localStorage.getItem('drone_admin_pass') || DEFAULT_PASS; }
+function isLogged() { return sessionStorage.getItem('drone_logged_in') === 'true'; }
+
+function openLogin() {
+  if (isLogged()) {
+    showAdmin();
+  } else {
+    document.getElementById('login-modal').style.display = 'flex';
+  }
+}
+function closeLogin() {
+  document.getElementById('login-modal').style.display = 'none';
+}
+
+function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+
+  if (!user || !pass) {
+    document.getElementById('login-error-msg').textContent = 'Preencha todos os campos.';
+    err.classList.add('show');
+    return;
+  }
+  if (user === getUser() && pass === getPass()) {
+    sessionStorage.setItem('drone_logged_in', 'true');
+    closeLogin();
+    err.classList.remove('show');
+    showAdmin();
+  } else {
+    document.getElementById('login-error-msg').textContent = 'Usuário ou senha incorretos.';
+    err.classList.add('show');
+    document.getElementById('login-pass').value = '';
+    const card = document.querySelector('.login-card');
+    card.classList.add('shake');
+    setTimeout(() => card.classList.remove('shake'), 500);
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-pass').focus(); });
+
+function doLogout() {
+  sessionStorage.removeItem('drone_logged_in');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('admin-view').style.display = 'none';
+  document.getElementById('public-view').style.display = '';
+}
+
+function showAdmin() {
+  document.getElementById('public-view').style.display = 'none';
+  document.getElementById('admin-view').style.display = '';
+  renderAdmin();
+  atualizarDadosServidor();
+}
+
+// --- Admin Dashboard Logic ---
+async function atualizarDadosServidor() {
+  if (!SHEETS_URL) return;
+  toast('Sincronizando dados...', 'refresh');
+  try {
+    const res = await fetch(SHEETS_URL);
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      renderAdmin();
+      toast('Dados atualizados da nuvem!', 'cloud-check');
+    }
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao sincronizar', 'alert-circle');
+  }
+}
+function renderAdmin() {
+  const dados = getCadastros();
+  const busca = (document.getElementById('busca')?.value || '').toLowerCase();
+
+  const filtrados = busca ? dados.filter(d =>
+    (d.nome||'').toLowerCase().includes(busca) ||
+    (d.area||'').toLowerCase().includes(busca) ||
+    (d.modelo||'').toLowerCase().includes(busca) ||
+    (d.local||'').toLowerCase().includes(busca) ||
+    (d.gerencia||'').toLowerCase().includes(busca) ||
+    (d.email||'').toLowerCase().includes(busca)
+  ) : dados;
+
+  // KPIs
+  document.getElementById('kpi-total').textContent = dados.length;
+  const hoje = new Date().toLocaleDateString('pt-BR');
+  document.getElementById('kpi-hoje').textContent = dados.filter(d => (d.data||'').startsWith(hoje)).length;
+  const areas = new Set(dados.map(d => d.area));
+  document.getElementById('kpi-areas').textContent = areas.size;
+
+  const area = document.getElementById('table-area');
+
+  if (!dados.length) {
+    area.innerHTML = `
+      <div class="empty-state">
+        <i class="ti ti-inbox"></i>
+        <h4>Nenhum cadastro ainda</h4>
+        <p>Os cadastros aparecerão aqui quando os solicitantes preencherem o formulário.</p>
+      </div>`;
+    return;
+  }
+  if (!filtrados.length) {
+    area.innerHTML = `
+      <div class="empty-state">
+        <i class="ti ti-search-off"></i>
+        <h4>Nenhum resultado</h4>
+        <p>Tente buscar por outro termo.</p>
+      </div>`;
+    return;
+  }
+
+  const rows = filtrados.slice().reverse().map(d => `
+    <tr>
+      <td style="font-weight:600;color:var(--accent2);">${d.id}</td>
+      <td>${d.data || '—'}</td>
+      <td><strong>${d.nome}</strong></td>
+      <td>${d.area}</td>
+      <td>${d.gerencia || '—'}</td>
+      <td>${d.modelo}</td>
+      <td>${d.local}</td>
+      <td>${d.email || '—'}</td>
+      <td>${d.telefone || '—'}</td>
+      <td>${d.obs || '—'}</td>
+      <td class="td-actions">
+        <button onclick="excluir('${d.id}')" title="Excluir"><i class="ti ti-trash" style="font-size:12px;"></i></button>
+      </td>
+    </tr>
+  `).join('');
+
+  area.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>#</th><th>Data</th><th>Nome</th><th>Área</th><th>Gerência</th>
+      <th>Modelo</th><th>Local</th><th>E-mail</th><th>Telefone</th><th>Obs</th><th></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+}
+
+function excluir(id) {
+  if (!confirm(`Excluir cadastro #${id}?`)) return;
+  
+  // Update local
+  let dados = getCadastros().filter(d => d.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+  renderAdmin();
+  toast('Cadastro excluído.');
+
+  // Delete from Server if configured
+  if (SHEETS_URL) {
+    fetch(SHEETS_URL + "?action=delete&id=" + id, { mode: 'no-cors' })
+      .catch(console.error);
+  }
+}
+
+function exportCSV() {
+  const dados = getCadastros();
+  if (!dados.length) { toast('Nenhum dado para exportar.', 'alert-circle'); return; }
+  const header = '#,Data,Nome,Área,Gerência,Modelo,Local,E-mail,Telefone,Observações';
+  const rows = dados.map(d =>
+    `${d.id},"${d.data}","${d.nome}","${d.area}","${d.gerencia}","${d.modelo}","${d.local}","${d.email || ''}","${d.telefone || ''}","${(d.obs || '').replace(/"/g, '""')}"`
+  );
+  const csv = '\uFEFF' + header + '\n' + rows.join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'cadastros_drones_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  toast('CSV exportado!');
+}
+
+// Se já estava logado antes (recarregou a página, etc), mostra direto o dashboard
+if (isLogged()) {
+  showAdmin();
+}
+</script>
+</body>
+</html>
