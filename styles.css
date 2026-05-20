@@ -100,6 +100,35 @@ body {
   line-height: 1.6;
 }
 
+/* Drone Image */
+.drone-img-wrap {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.drone-img {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 16px;
+  opacity: 0.85;
+  filter: drop-shadow(0 8px 32px rgba(108,99,255,0.2));
+  transition: opacity .3s, transform .3s;
+}
+.drone-img:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+@media (max-width: 800px) {
+  .drone-img-wrap { margin-top: 1rem; }
+  .drone-img { max-width: 260px; }
+}
+
+/* Optional label */
+.opcional {
+  font-weight: 400;
+  color: var(--text3);
+  font-size: 11px;
+}
+
 /* Navigation */
 .nav-bar {
   display: flex;
@@ -169,7 +198,7 @@ input, select, textarea {
   width: 100%;
   padding: 10px 14px;
   background: var(--surface2);
-  border: 1px solid var(--border2);
+  border: 1px solid rgba(108,99,255,0.25);
   border-radius: var(--r);
   color: var(--text);
   font-family: inherit;

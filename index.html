@@ -42,6 +42,9 @@
         <p>A ferramenta centraliza as solicitações, assegura padronização das informações e viabiliza maior rastreabilidade dos equipamentos.</p>
         <p>O correto preenchimento é essencial para garantir assertividade nas decisões, otimização de recursos e aderência às diretrizes corporativas.</p>
         <p>Dessa forma, o Forms se consolida como instrumento oficial de controle e gestão das novas aquisições de drones.</p>
+        <div class="drone-img-wrap">
+          <img src="drone.png" alt="Drone" class="drone-img" />
+        </div>
       </div>
 
       <!-- Form Area -->
@@ -81,13 +84,13 @@
                 <input type="text" id="f-local" placeholder="Ex: Mina Cauê" />
               </div>
               <div class="fg">
-                <label>E-mail</label>
+                <label>E-mail <span class="opcional">(opcional)</span></label>
                 <input type="email" id="f-email" placeholder="seu@email.com" />
               </div>
             </div>
 
             <div class="fg">
-              <label>Telefone</label>
+              <label>Telefone <span class="opcional">(opcional)</span></label>
               <input type="tel" id="f-telefone" placeholder="(00) 00000-0000" />
             </div>
 
@@ -205,6 +208,9 @@
         <button class="btn-sm" onclick="exportCSV()">
           <i class="ti ti-download" style="font-size:14px;"></i> Exportar CSV
         </button>
+        <button class="btn-sm" onclick="toggleConfig()">
+          <i class="ti ti-settings" style="font-size:14px;"></i> Configurações
+        </button>
         <button class="btn-sm" onclick="doLogout()" style="color:var(--danger);border-color:rgba(239,68,68,.25);">
           <i class="ti ti-logout" style="font-size:14px;"></i> Sair
         </button>
@@ -242,6 +248,27 @@
           <p>Os cadastros aparecerão aqui quando preencherem o formulário.</p>
         </div>
       </div>
+    </div>
+
+    <!-- Config Panel -->
+    <div class="card" id="config-panel" style="display:none;">
+      <div class="card-title">
+        <i class="ti ti-settings" style="color:var(--accent2);"></i>
+        Alterar Login e Senha
+      </div>
+      <div class="grid2">
+        <div class="fg">
+          <label>Novo usuário</label>
+          <input type="text" id="cfg-user" placeholder="admin" />
+        </div>
+        <div class="fg">
+          <label>Nova senha</label>
+          <input type="password" id="cfg-pass" placeholder="••••••••" />
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="salvarCredenciais()" style="max-width:260px;">
+        <i class="ti ti-device-floppy" style="font-size:16px;"></i> Salvar credenciais
+      </button>
     </div>
   </div>
 </div>
@@ -509,6 +536,37 @@ function exportCSV() {
   a.download = 'cadastros_drones_' + new Date().toISOString().slice(0, 10) + '.csv';
   a.click();
   toast('CSV exportado!');
+}
+
+// --- Config Panel ---
+function toggleConfig() {
+  const panel = document.getElementById('config-panel');
+  if (panel.style.display === 'none') {
+    panel.style.display = '';
+    document.getElementById('cfg-user').value = getUser();
+    document.getElementById('cfg-pass').value = '';
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
+function salvarCredenciais() {
+  const newUser = document.getElementById('cfg-user').value.trim();
+  const newPass = document.getElementById('cfg-pass').value;
+
+  if (!newUser || !newPass) {
+    toast('Preencha usuário e senha.', 'alert-circle');
+    return;
+  }
+  if (newPass.length < 4) {
+    toast('A senha deve ter pelo menos 4 caracteres.', 'alert-circle');
+    return;
+  }
+
+  localStorage.setItem('drone_admin_user', newUser);
+  localStorage.setItem('drone_admin_pass', newPass);
+  toast('Credenciais salvas com sucesso!', 'check');
+  document.getElementById('config-panel').style.display = 'none';
 }
 
 // Se já estava logado antes (recarregou a página, etc), mostra direto o dashboard
